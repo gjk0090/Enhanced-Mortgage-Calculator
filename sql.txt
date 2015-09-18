@@ -1,0 +1,12 @@
+create table users(userid number(10) not null,username varchar2(20) not null,password varchar2(20) not null, nickname varchar2(20) not null, enabled number(1) not null, role varchar2(20) not null,constraint users_pkey primary key (userid));
+insert into users values(1,'emc','emc','Jake',1,'ROLE_ADMIN');
+insert into users values(2,'emc2','emc2','Jake2',1,'ROLE_USER');
+create table rates(term number(10) not null, rate number(6,3) not null, min number(20) not null, constraint rates_pkey primary key (term));
+insert into rates values(30,4.555,300000); 
+insert into rates values(20,4.055,200000); 
+insert into rates values(15,3.555,150000); 
+insert into rates values(10,3.055,100000); 
+insert into rates values(5,2.655,50000); 
+insert into rates values(3,2.455,30000);
+insert into rates values(2,2.255,20000);
+insert into rates values(1,2.055,10000);

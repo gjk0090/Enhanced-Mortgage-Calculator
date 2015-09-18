@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/cache 
+        http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<context:component-scan base-package="emc.controller" />
+	<mvc:annotation-driven />
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/myoracle" />
+	</bean>
+
+
+	<cache:annotation-driven />
+	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set>
+				<bean
+					class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean"
+					p:name="default" />
+				<bean
+					class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean"
+					p:name="calculate_simple" />
+				<bean
+					class="org.springframework.cache.concurrent.ConcurrentCacheFactoryBean"
+					p:name="get_rate" />
+			</set>
+		</property>
+	</bean>
+
+
+
+	<bean id="userController" class="emc.controller.UserController">
+		<property name="us" ref="userService" />
+		<property name="js" ref="javaMailService" />
+	</bean>
+	<bean id="loginController" class="emc.controller.LoginController">
+		<property name="us" ref="userService" />
+		<property name="rd" ref="rateDao" />
+	</bean>
+	<bean id="userService" class="emc.service.UserService">
+		<property name="ud" ref="userDao" />
+	</bean>
+	<bean id="userDao" class="emc.dao.UserDaoImpl" />
+
+
+	<bean id="javaMailService" class="emc.service.JavaMailService" />
+
+
+
+	<bean id="mortgageController" class="emc.controller.MortgageController">
+		<property name="ms" ref="mortgageService" />
+	</bean>
+	<bean id="mortgageService" class="emc.service.MortgageService">
+		<property name="rd" ref="rateDao" />
+	</bean>
+	<bean id="rateDao" class="emc.dao.RateDaoImpl" />
+
+	<bean id="adDao" class="emc.dao.AdDaoImpl" />
+	<bean id="adService" class="emc.service.AdService">
+		<property name="add" ref="adDao" />
+	</bean>
+
+	<bean id="adController" class="emc.controller.AdController">
+		<property name="ads" ref="adService" />
+	</bean>
+
+	<bean id="userActDao" class="emc.dao.UserActDaoImpl" />
+	<bean id="userActService" class="emc.service.UserActService">
+		<property name="uad" ref="userActDao" />
+	</bean>
+
+	<bean id="userActController" class="emc.controller.UserActController">
+		<property name="uas" ref="userActService" />
+		<property name="us" ref="userService" />
+	</bean>
+
+
+	<bean class="emc.context.SpringContext" />
+
+</beans>
