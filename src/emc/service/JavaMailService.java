@@ -19,7 +19,7 @@ public class JavaMailService {
         prop.setProperty("mail.smtp.socketFactory.port", "465");   
         prop.put("mail.smtp.auth", "true");   
         final String user = "javamailtestgjk@gmail.com";
-        final String password = "javamailtest";
+        final String password = "0-11";
         
         Session session = Session.getDefaultInstance(prop, new Authenticator() {
         	@Override
